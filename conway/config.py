@@ -1,0 +1,2 @@
+WIDTH  = 60
+HEIGHT = 35

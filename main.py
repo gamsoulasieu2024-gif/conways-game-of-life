@@ -1,9 +1,7 @@
-# main.py
-
-from ui_board import run_game2dboard_mode
+from conway.ui import run
 
 def main():
-    run_game2dboard_mode()
+    run()
 
 if __name__ == "__main__":
     main()

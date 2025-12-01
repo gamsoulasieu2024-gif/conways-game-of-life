@@ -1,10 +1,7 @@
-# game_logic.py
-
 import random
 from collections import deque
-from config import WIDTH, HEIGHT
+from conway.config import WIDTH, HEIGHT
 
-# build and copy grid
 
 def make_grid(randomize=True):
     # build a height x width grid
@@ -30,18 +27,12 @@ def copy_grid(grid):
     return [row[:] for row in grid]
 
 
-# game rules
-
 def count_neighbors(grid, x, y):
-    # count alive neighbors around cell (x, y) with wrap-around edges
-    # always checks 8 neighbors
-    # time: o(1)
-    # space: o(1)
     neighbors = 0
     for dy in (-1, 0, 1):
         for dx in (-1, 0, 1):
             if dx == 0 and dy == 0:
-                continue  # skip the cell itself
+                continue
             nx = (x + dx) % WIDTH
             ny = (y + dy) % HEIGHT
             neighbors += grid[ny][nx]
@@ -49,19 +40,14 @@ def count_neighbors(grid, x, y):
 
 
 def step(grid):
-    # compute next generation from the current grid
-    # visit every cell once and do o(1) work per cell
-    # time: o(h * w)
-    # space: o(h * w) for the new grid
     new_grid = []
     for y in range(HEIGHT):
         new_row = []
         for x in range(WIDTH):
-            alive = grid[y][x] == 1
+            alive     = grid[y][x] == 1
             neighbors = count_neighbors(grid, x, y)
 
             if alive:
-                # live cell stays alive with 2 or 3 neighbors
                 if neighbors == 2 or neighbors == 3:
                     new_row.append(1)
                 else:
@@ -91,13 +77,12 @@ def largest_live_cluster_size(grid):
                 queue = deque()
                 queue.append((y, x))
                 visited[y][x] = True
-                current_size = 0
+                current_size  = 0
 
                 while queue:
-                    cy, cx = queue.popleft()
+                    cy, cx        = queue.popleft()
                     current_size += 1
 
-                    # explore 8 neighbors with wrap-around
                     for dy in (-1, 0, 1):
                         for dx in (-1, 0, 1):
                             if dx == 0 and dy == 0:
